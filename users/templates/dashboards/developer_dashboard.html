@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Project Dashboard</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Dashboard Overview</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Active Projects</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Assigned Tasks</a>
+                <a href="{% url 'usecase_list' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Use Cases</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Code Repository</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Files</a>
+                <a href="{% url 'login' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Logout</a>
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <!-- Header -->
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, {{ profile.name }} {{ profile.surname }}</h2>
+                <div class="flex items-center space-x-4">
+                    {% load static %}
+
+{% if profile.profile_picture %}
+    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% else %}
+    <img src="{% static 'images/profile_picture_placeholder.jpg' %}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% endif %}
+
+                    <div class="text-gray-700">
+                        <p class="font-medium">{{ profile.name }} {{ profile.surname }}</p>
+                        <p class="text-sm">{{ profile.get_role_display }}</p>
+                    </div>
+                </div>
+            </header>
+
+                <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16"></div>
+    </div>
+
+            <!-- Main Dashboard Content -->
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-6">Dashboard Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1: Active Projects -->
+                    <div class="bg-blue-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-blue-800">Active Projects</h4>
+                        <p class="text-4xl font-bold text-blue-600 mt-4">5</p>
+                        <p class="text-sm text-gray-700">Projects you are currently working on.</p>
+                    </div>
+                    <!-- Card 2: Assigned Tasks -->
+                    <div class="bg-green-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-green-800">Assigned Tasks</h4>
+                        <p class="text-4xl font-bold text-green-600 mt-4">12</p>
+                        <p class="text-sm text-gray-700">Tasks assigned to you with deadlines.</p>
+                    </div>
+                    <!-- Card 3: Code Commits -->
+                    <div class="bg-yellow-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-yellow-800">Recent Code Commits</h4>
+                        <p class="text-4xl font-bold text-yellow-600 mt-4">8</p>
+                        <p class="text-sm text-gray-700">Recent commits made to your repositories.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Projects Section -->
+            <div class="p-6 mt-6">
+                <h3 class="text-2xl font-bold mb-4">Active Projects</h3>
+                <div class="bg-white shadow-lg rounded-lg p-4">
+                    <ul>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Project Alpha</span>
+                            <span class="text-blue-600">In Progress</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Project Beta</span>
+                            <span class="text-yellow-600">Blocked</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Project Gamma</span>
+                            <span class="text-green-600">Completed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Assigned Tasks Section -->
+            <div class="p-6 mt-6">
+                <h3 class="text-2xl font-bold mb-4">Assigned Tasks</h3>
+                <div class="bg-white shadow-lg rounded-lg p-4">
+                    <ul>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Task 1: Implement API</span>
+                            <span class="text-blue-600">In Progress</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Task 2: Write Unit Tests</span>
+                            <span class="text-yellow-600">Pending</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Task 3: Code Review</span>
+                            <span class="text-green-600">Completed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Version Control Section -->
+            <div class="p-6 mt-6">
+                <h3 class="text-2xl font-bold mb-4">Code Repository & Commits</h3>
+                <div class="bg-white shadow-lg rounded-lg p-4">
+                    <ul>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Commit 1: Refactor API endpoints</span>
+                            <span class="text-green-600">Successful</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Commit 2: Fix bug in user authentication</span>
+                            <span class="text-yellow-600">Pending Review</span>
+                        </li>
+                        <li class="flex justify-between py-2 border-b">
+                            <span>Commit 3: Update documentation</span>
+                            <span class="text-green-600">Successful</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Workflows Section -->
+            <div class="p-6 mt-6">
+                <h3 class="text-2xl font-bold mb-4">Workflows & Use Cases</h3>
+                <div class="bg-white shadow-lg rounded-lg p-4">
+                    <ul>
+                        <li class="py-2 border-b">Workflow: User Authentication</li>
+                        <li class="py-2 border-b">Use Case: Register User</li>
+                        <li class="py-2 border-b">Use Case: Login User</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Notifications & Alerts -->
+            <div class="p-6 mt-6">
+                <h3 class="text-2xl font-bold mb-4">Notifications & Alerts</h3>
+                <div class="bg-white shadow-lg rounded-lg p-4">
+                    <ul>
+                        <li class="py-2 border-b">New task assigned: Task 2</li>
+                        <li class="py-2 border-b">Milestone approaching: Project Beta</li>
+                        <li class="py-2 border-b">Code review completed for Commit 2</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+
+<!-- Page Loader jScript -->
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 500);  // 500 milliseconds = 0.5 seconds
+    };
+</script>

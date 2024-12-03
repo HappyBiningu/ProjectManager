@@ -1,0 +1,32 @@
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+<div class="p-8 bg-white rounded-lg shadow-xl max-w-xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6 border-b pb-6">
+        <!-- Back Button -->
+        <a href="{% url 'usecase_list' %}" 
+           class="flex items-center text-gray-600 hover:text-blue-600 text-sm font-medium transition-colors duration-300">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Use Cases
+        </a>
+        <!-- Title -->
+        <h1 class="text-3xl font-extrabold text-gray-800">{{ form.instance.id|default:"Create New Use Case" }}</h1>
+    </div>
+
+    <!-- Form Section -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="space-y-6">
+            <!-- Render form fields with some padding and border -->
+            {{ form.as_p }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" 
+                class="mt-8 w-full px-8 py-4 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300 transition-colors duration-200 ease-in-out">
+            <i class="fas fa-save mr-3"></i> Save
+        </button>
+    </form>
+</div>

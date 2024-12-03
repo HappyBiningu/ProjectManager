@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">DevFlow</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard Overview</a>
+                <a href="{% url 'user_management' %}" class="block py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-users mr-2"></i> User Management
+                </a>                
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Reports & Analytics</a>
+                <a href="{% url 'admin_settings' %}" class="block py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-cogs mr-2"></i> System Settings
+                </a>
+                <a href="{% url 'login' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Logout</a>
+                
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <!-- Header -->
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, {{ profile.name }} {{ profile.surname }}</h2>
+                <div class="flex items-center space-x-4">
+                    {% load static %}
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    {% else %}
+                        <img src="{% static 'images/profile_picture_placeholder.jpg' %}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    {% endif %}
+                    <div class="text-gray-700">
+                        <p class="font-medium">{{ profile.name }} {{ profile.surname }}</p>
+                        <p class="text-sm">{{ profile.get_role_display }}</p>
+                    </div>
+                </div>
+            </header>
+
+                            <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16"></div>
+    </div>
+
+            <!-- Main Dashboard Content -->
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-6">Dashboard Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1: System Overview -->
+<div class="bg-blue-100 p-6 rounded-lg shadow">
+    <h4 class="text-lg font-semibold text-blue-800"><i class="fas fa-heartbeat mr-2"></i>System Health</h4>
+    <ul class="list-disc pl-5 mt-4">
+        <li>Performance: {{ system_performance }}</li>
+        <li>CPU Usage: {{ resource_usage.CPU }}%</li>
+        <li>Memory Usage: {{ resource_usage.Memory }}%</li>
+        <li>Disk Usage: {{ resource_usage.Disk }}%</li>
+        <li>System Notifications: 
+            <ul>
+                {% for notification in system_notifications %}
+                    <li>{{ notification }}</li>
+                {% empty %}
+                    <li>No critical issues</li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
+
+                    <!-- Card 2: User Management -->
+                    <div class="bg-green-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-green-800">User Management</h4>
+                        <ul class="list-disc pl-5 mt-4">
+                            <li>Total Users: {{ total_users }}</li>
+                            <li>Active Users: {{ active_users }}</li>
+                            <li>Pending Registrations: {{ pending_users }}</li>
+                            <li>Suspended Accounts: {{ suspended_accounts }}</li>
+                        </ul>
+                    </div>
+                    <!-- Card 3: Project Management -->
+                    <div class="bg-yellow-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-yellow-800"> <i class="fas fa-project-diagram mr-2"></i> Project Management</h4>
+                        <ul class="list-disc pl-5 mt-4">
+                            <li>Total Projects: {{ total_projects }}</li>
+                            <li>Active Projects: {{ active_projects }}</li>
+                            <li>Delayed Projects: {{ delayed_projects }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    <!-- Card 4: Task Management -->
+                    <div class="bg-purple-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-purple-800">Task Management</h4>
+                        <ul class="list-disc pl-5 mt-4">
+                            <li>Completed Tasks: {{ completed_tasks }}</li>
+                            <li>In Progress Tasks: {{ in_progress_tasks }}</li>
+                            <li>Not Started Tasks: {{ not_started_tasks }}</li>
+                        </ul>
+                    </div>
+                    <!-- Card 5: Reports & Analytics -->
+                    <div class="bg-teal-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-teal-800">Reports & Analytics</h4>
+                        <ul class="list-disc pl-5 mt-4">
+                            <li>Generate Project Health Reports</li>
+                            <li>Track Task & Resource Allocation</li>
+                            <li>User Activity Reports</li>
+                        </ul>
+                    </div>
+                    <!-- Card 6: Backup & Recovery -->
+                    <div class="bg-gray-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-gray-800">Backup & Recovery</h4>
+                        <ul class="list-disc pl-5 mt-4">
+                            <li>Backup Status: All backups completed</li>
+                            <li>Restore Points: Available for all projects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<!-- Page Loader jScript -->
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 500);  // 500 milliseconds = 0.5 seconds
+    };
+</script>

@@ -1,0 +1,87 @@
+.kanban-board {
+    display: flex;
+    gap: 20px;
+}
+.kanban-column {
+    width: 30%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: #f9f9f9;
+}
+.task {
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: grab;
+}
+
+<h1>{{ project.title }} - Kanban Board</h1>
+<div class="kanban-board">
+    <div class="kanban-column" data-column="todo">
+        <h3>To Do</h3>
+        <div class="tasks">
+            {% for task in tasks %}
+                {% if task.column == "todo" %}
+                    <div class="task" data-id="{{ task.id }}">
+                        {{ task.title }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="kanban-column" data-column="in_progress">
+        <h3>In Progress</h3>
+        <div class="tasks">
+            {% for task in tasks %}
+                {% if task.column == "in_progress" %}
+                    <div class="task" data-id="{{ task.id }}">
+                        {{ task.title }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="kanban-column" data-column="done">
+        <h3>Done</h3>
+        <div class="tasks">
+            {% for task in tasks %}
+                {% if task.column == "done" %}
+                    <div class="task" data-id="{{ task.id }}">
+                        {{ task.title }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script>
+    document.querySelectorAll('.kanban-column .tasks').forEach(column => {
+        new Sortable(column, {
+            group: 'kanban',
+            animation: 150,
+            onEnd: function (evt) {
+                const taskId = evt.item.dataset.id;
+                const newColumn = evt.to.parentElement.dataset.column;
+
+                fetch(`/task/${taskId}/update-column/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: new URLSearchParams({
+                        'column': newColumn
+                    })
+                }).then(response => response.json()).then(data => {
+                    if (!data.success) {
+                        alert("Failed to update task column!");
+                    }
+                });
+            }
+        });
+    });
+</script>

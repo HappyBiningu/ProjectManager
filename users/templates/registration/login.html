@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loader-animation {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #6366F1; /* Indigo color */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Gradient background animation */
+        @keyframes gradientAnimation {
+            0% { background: linear-gradient(to right, #6366F1, #3B82F6); }
+            50% { background: linear-gradient(to right, #9333EA, #3B82F6); }
+            100% { background: linear-gradient(to right, #6366F1, #3B82F6); }
+        }
+
+        body {
+            animation: gradientAnimation 8s ease infinite; /* Adding the gradient animation to the body */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-animation"></div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="glass p-8 rounded-2xl shadow-2xl w-full max-w-md animate__animated animate__fadeInUp">
+        <!-- Branding -->
+        <div class="flex justify-center mb-6">
+            <img src="/static/images/logo.png" alt="Logo" class="w-20 h-20">
+        </div>
+
+        <h2 class="text-3xl font-bold text-indigo-600 text-center mb-6">Welcome Back</h2>
+
+        <!-- Error Messages -->
+        {% if form.errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline">{{ form.non_field_errors }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input id="username" name="username" type="text" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div class="relative">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input id="id_password" name="password" type="password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-indigo-500">
+                    Show
+                </button>
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">
+                Login
+            </button>
+        </form>
+
+        <!-- Signup Button -->
+        <div class="mt-4 text-center">
+            <p class="text-gray-600">Don't have an account?</p>
+            <a href="{% url 'register' %}" class="text-indigo-600 hover:underline">Signup here</a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 mt-6">
+            <p>&copy; {% now "Y" %} DevFlow. <a href="#" class="text-indigo-500 hover:underline">Privacy Policy</a></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("id_password");
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+        }
+
+        // Hide loader after page loads
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

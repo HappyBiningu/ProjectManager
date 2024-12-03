@@ -1,0 +1,15 @@
+<h1>Success Criteria</h1>
+<a href="{% url 'success_criteria_create' %}">Add New Success Criteria</a>
+<ul>
+    {% for criterion in criteria %}
+        <li>
+            <strong>{{ criterion.requirement.title }}</strong>: 
+            {{ criterion.description }} 
+            - Met: {{ criterion.is_met }}
+            {% if criterion.test_document %}
+                <a href="{{ criterion.test_document.url }}">Download Test Document</a>
+            {% endif %}
+            <a href="{% url 'success_criteria_update' criterion.id %}">Edit</a>
+        </li>
+    {% endfor %}
+</ul>

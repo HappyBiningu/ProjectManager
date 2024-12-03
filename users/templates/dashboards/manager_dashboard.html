@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Project Dashboard</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Dashboard Overview</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Projects</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Requirements</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Tasks</a>
+                <a href="{% url 'usecase_list' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Use Cases</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Profiles</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Files</a>
+                <a href="{% url 'login' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Logout</a>
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <!-- Header -->
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, {{ profile.name }} {{ profile.surname }}</h2>
+                <div class="flex items-center space-x-4">
+                    {% load static %}
+
+{% if profile.profile_picture %}
+    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% else %}
+    <img src="{% static 'images/profile_picture_placeholder.jpg' %}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% endif %}
+
+                    <div class="text-gray-700">
+                        <p class="font-medium">{{ profile.name }} {{ profile.surname }}</p>
+                        <p class="text-sm">{{ profile.get_role_display }}</p>
+                    </div>
+                </div>
+            </header>
+
+                <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16"></div>
+    </div>
+
+            <!-- Main Dashboard Content -->
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-6">Dashboard Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 - Total Projects -->
+                    <div class="bg-blue-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-blue-800">Total Projects</h4>
+                        <p class="text-4xl font-bold text-blue-600 mt-4">15</p>
+                    </div>
+                    <!-- Card 2 - Completed Tasks -->
+                    <div class="bg-green-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-green-800">Completed Tasks</h4>
+                        <p class="text-4xl font-bold text-green-600 mt-4">45</p>
+                    </div>
+                    <!-- Card 3 - Pending Requirements -->
+                    <div class="bg-yellow-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-yellow-800">Pending Requirements</h4>
+                        <p class="text-4xl font-bold text-yellow-600 mt-4">8</p>
+                    </div>
+                </div>
+
+                <!-- Task Progress Section -->
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-4">Task Progress Overview</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Progress Card 1 -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h5 class="font-semibold text-gray-800">Total Tasks</h5>
+                            <div class="mt-2 flex justify-between items-center">
+                                <p class="text-4xl font-bold text-gray-600">120</p>
+                                <p class="text-sm text-gray-500">Total Assigned</p>
+                            </div>
+                            <div class="mt-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Progress Card 2 -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h5 class="font-semibold text-gray-800">In Progress</h5>
+                            <div class="mt-2 flex justify-between items-center">
+                                <p class="text-4xl font-bold text-gray-600">30</p>
+                                <p class="text-sm text-gray-500">Tasks Ongoing</p>
+                            </div>
+                            <div class="mt-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2" style="width: 50%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Progress Card 3 -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h5 class="font-semibold text-gray-800">Completed</h5>
+                            <div class="mt-2 flex justify-between items-center">
+                                <p class="text-4xl font-bold text-gray-600">60</p>
+                                <p class="text-sm text-gray-500">Tasks Completed</p>
+                            </div>
+                            <div class="mt-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2" style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gantt Chart Section -->
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-4">Project Timeline (Gantt Chart)</h4>
+                    <!-- Placeholder for Gantt Chart -->
+                    <div class="bg-gray-200 p-4 rounded-lg shadow">
+                        <p class="text-gray-700">[Gantt Chart Placeholder]</p>
+                    </div>
+                </div>
+
+                <!-- Agile Boards Section -->
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-4">Agile Boards</h4>
+                    <!-- Kanban Board Placeholder -->
+                    <div class="bg-gray-200 p-4 rounded-lg shadow">
+                        <p class="text-gray-700">[Kanban Board Placeholder]</p>
+                    </div>
+                </div>
+
+                <!-- Milestone Tracker Section -->
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-4">Milestone Progress</h4>
+                    <!-- Milestone Progress Bar -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h5 class="font-semibold text-gray-800">Milestone 1</h5>
+                        <div class="mt-2 flex justify-between items-center">
+                            <p class="text-4xl font-bold text-gray-600">80%</p>
+                            <p class="text-sm text-gray-500">Milestone Completion</p>
+                        </div>
+                        <div class="mt-4">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-4">Notifications</h4>
+                    <!-- Notification Cards -->
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="font-medium text-gray-800">Task Deadline Approaching</p>
+                            <p class="text-sm text-gray-500">Task XYZ is due tomorrow</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="font-medium text-gray-800">New Requirement Added</p>
+                            <p class="text-sm text-gray-500">Requirement ABC has been added for review</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<!-- Page Loader jScript -->
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 500);  // 500 milliseconds = 0.5 seconds
+    };
+</script>

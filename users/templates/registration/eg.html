@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Project Dashboard</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Dashboard Overview</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Projects</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Requirements</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Tasks</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Use Cases</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Profiles</a>
+                <a href="#" class="block py-2 px-4 rounded hover:bg-blue-600">Files</a>
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; 2024 Project Management</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <!-- Header -->
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, [User]</h2>
+                <div class="flex items-center space-x-4">
+                    <img src="profile_picture_placeholder.jpg" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    <div class="text-gray-700">
+                        <p class="font-medium">John Doe</p>
+                        <p class="text-sm">System Designer</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Dashboard Content -->
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-6">Dashboard Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-blue-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-blue-800">Total Projects</h4>
+                        <p class="text-4xl font-bold text-blue-600 mt-4">15</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-green-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-green-800">Completed Tasks</h4>
+                        <p class="text-4xl font-bold text-green-600 mt-4">45</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-yellow-100 p-6 rounded-lg shadow">
+                        <h4 class="text-lg font-semibold text-yellow-800">Pending Requirements</h4>
+                        <p class="text-4xl font-bold text-yellow-600 mt-4">8</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+
+.glass {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loader-animation {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #6366F1; /* Indigo color */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Gradient background animation */
+@keyframes gradientAnimation {
+    0% { background: linear-gradient(to right, #6366F1, #3B82F6); }
+    50% { background: linear-gradient(to right, #9333EA, #3B82F6); }
+    100% { background: linear-gradient(to right, #6366F1, #3B82F6); }
+}
+
+body {
+    animation: gradientAnimation 8s ease infinite; /* Adding the gradient animation to the body */
+}

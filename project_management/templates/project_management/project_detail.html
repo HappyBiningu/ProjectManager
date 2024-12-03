@@ -1,0 +1,20 @@
+<h1>{{ project.title }}</h1>
+<p>{{ project.description }}</p>
+<h2>Tasks</h2>
+<a href="{% url 'task_create' %}">Add New Task</a>
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.title }} - {{ task.get_status_display }}</li>
+    {% endfor %}
+</ul>
+
+
+<h3>Comments</h3>
+{% for comment in object.comment_set.all %}
+    <div>
+        <strong>{{ comment.user.username }}</strong> - {{ comment.created_at }}
+        <p>{{ comment.content }}</p>
+    </div>
+{% endfor %}
+
+<a href="{% url 'add_comment' model_name='project' object_id=project.id %}">Add a comment</a>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Requirement</title>
+</head>
+<body>
+    <h1>Edit Requirement</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <!-- Add form fields here to update the requirement -->
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ requirement.title }}" required><br>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>{{ requirement.description }}</textarea><br>
+
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority">
+            <option value="low" {% if requirement.priority == 'low' %}selected{% endif %}>Low</option>
+            <option value="medium" {% if requirement.priority == 'medium' %}selected{% endif %}>Medium</option>
+            <option value="high" {% if requirement.priority == 'high' %}selected{% endif %}>High</option>
+        </select><br>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="pending" {% if requirement.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="in_progress" {% if requirement.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if requirement.status == 'completed' %}selected{% endif %}>Completed</option>
+        </select><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+    
+</body>
+</html>

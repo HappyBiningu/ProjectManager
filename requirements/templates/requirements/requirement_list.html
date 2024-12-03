@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requirement List</title>
+</head>
+<body>
+    <h1>Requirement List</h1>
+    
+    <ul>
+        {% for requirement in requirements %}
+            <li>
+                <strong>{{ requirement.title }}</strong> 
+                ({{ requirement.get_requirement_type_display }}) 
+                - Priority: {{ requirement.priority }} 
+                - Status: {{ requirement.get_status_display }}
+                <a href="{% url 'success_criteria_list' %}?requirement={{ requirement.id }}">View Success Criteria</a> |
+                <a href="{% url 'requirement_update' requirement.id %}">Edit</a>
+            </li>
+        {% empty %}
+            <p>No requirements found.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

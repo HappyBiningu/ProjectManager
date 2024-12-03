@@ -1,0 +1,26 @@
+<h1>{{ form.instance.id|default:"Create New Workflow" }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<script src="https://unpkg.com/gojs"></script>
+<div id="diagramDiv" style="width:100%; height:500px; border:1px solid black;"></div>
+<textarea id="diagramData" name="diagram_data" hidden>{{ form.initial.diagram_data }}</textarea>
+<button type="button" onclick="saveDiagram()">Save Diagram</button>
+<script>
+    const $ = go.GraphObject.make;
+    const myDiagram = $(go.Diagram, "diagramDiv", { "undoManager.isEnabled": true });
+
+    myDiagram.nodeTemplate = $(go.Node, "Auto", $(go.Shape, "RoundedRectangle", { fill: "white" }),
+        $(go.TextBlock, { margin: 5 }, new go.Binding("text", "key"))
+    );
+
+    myDiagram.model = go.Model.fromJson(document.getElementById("diagramData").value || "{}");
+
+    function saveDiagram() {
+        const diagramData = myDiagram.model.toJson();
+        document.getElementById("diagramData").value = diagramData;
+        alert("Diagram Saved!");
+    }
+</script>

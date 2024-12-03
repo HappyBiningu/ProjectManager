@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings</title>
+        <!-- Load Static Files -->
+        {% load static %}
+        
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="{% url 'admin_dashboard' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Dashboard Overview</a>
+                <a href="{% url 'admin_settings' %}" class="block py-2 px-4 rounded hover:bg-blue-600">System Settings</a>
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, {{ profile.name }} {{ profile.surname }}</h2>
+                <div class="flex items-center space-x-4">
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    {% else %}
+                        <img src="{% static 'images/profile_picture_placeholder.jpg' %}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+                    {% endif %}
+                    <div class="text-gray-700">
+                        <p class="font-medium">{{ profile.name }} {{ profile.surname }}</p>
+                        <p class="text-sm">{{ profile.get_role_display }}</p>
+                    </div>
+                </div>
+            </header>
+
+                                       <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16"></div>
+    </div>
+
+<!-- Settings -->
+<div class="p-6">
+    <h3 class="text-2xl font-bold mb-6">System Settings</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for setting in system_settings %}
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h4 class="text-lg font-semibold text-blue-800">{{ setting.name }}</h4>
+            <p class="text-sm">{{ setting.description }}</p>
+            <form action="{% url 'update_settings' setting.id %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="value" value="{{ setting.value }}" class="mt-2 p-2 border border-gray-300 rounded">
+                <button type="submit" class="mt-2 bg-blue-600 text-white py-2 px-4 rounded">Update</button>
+            </form>
+        </div>
+        {% empty %}
+        <p>No settings available.</p>  <!-- Fallback message if no settings are available -->
+        {% endfor %}
+    </div>
+</div>
+
+
+                <!-- Audit Trail -->
+                <h3 class="text-2xl font-bold mt-6 mb-4">Audit Trail</h3>
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-3 text-left">Action</th>
+                            <th class="p-3 text-left">Description</th>
+                            <th class="p-3 text-left">Timestamp</th>
+                            <th class="p-3 text-left">User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in audit_logs %}
+                        <tr class="border-b">
+                            <td class="p-3">{{ log.action }}</td>
+                            <td class="p-3">{{ log.description }}</td>
+                            <td class="p-3">{{ log.timestamp }}</td>
+                            <td class="p-3">{{ log.user.username }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="p-3 text-center">No audit logs found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
+
+
+
+<!-- Page Loader jScript -->
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 500);  // 500 milliseconds = 0.5 seconds
+    };
+</script>

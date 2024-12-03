@@ -1,0 +1,13 @@
+<h1>Workflows</h1>
+<a href="{% url 'workflow_create' %}">Create New Workflow</a>
+<ul>
+    {% for workflow in workflows %}
+        <li>
+            <a href="{% url 'workflow_update' workflow.id %}">{{ workflow.name }}</a> - Version {{ workflow.version }}
+            <form method="post" action="{% url 'workflow_delete' workflow.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

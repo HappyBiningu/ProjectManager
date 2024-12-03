@@ -1,0 +1,77 @@
+<!-- user_management.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="{% url 'admin_dashboard' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Dashboard</a>
+                <a href="{% url 'user_management' %}" class="block py-2 px-4 rounded bg-blue-600">User Management</a>
+                <!-- other links -->
+            </nav>
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">User Management</h2>
+            </header>
+
+            <div class="p-6">
+                <table class="min-w-full bg-white shadow rounded-lg">
+                    <thead>
+                        <tr class="text-left bg-gray-200">
+                            <th class="px-4 py-2">Username</th>
+                            <th class="px-4 py-2">Email</th>
+                            <th class="px-4 py-2">Role</th>
+                            <th class="px-4 py-2">Suspended</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td class="px-4 py-2">{{ user.username }}</td>
+                            <td class="px-4 py-2">{{ user.email }}</td>
+                            <td class="px-4 py-2">{{ user.profile.get_role_display }}</td>
+                            <td class="px-4 py-2">
+                                {% if user.profile.is_suspended %}
+                                    <span class="text-red-500">Yes</span>
+                                {% else %}
+                                    <span class="text-green-500">No</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-2">
+                                <a href="{% url 'edit_user' user.id %}" class="text-blue-500 hover:underline">Edit</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center px-4 py-2">No users found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

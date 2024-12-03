@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designer Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Main Container -->
+    <div class="flex h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-800 text-white flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold">DevFlow</h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-tachometer-alt w-5 h-5 mr-2 text-white"></i>
+                    Dashboard Overview
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-project-diagram w-5 h-5 mr-2 text-white"></i>
+                    Projects
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-list w-5 h-5 mr-2 text-white"></i>
+                    Requirements
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-tasks w-5 h-5 mr-2 text-white"></i>
+                    Tasks
+                </a>
+                <a href="{% url 'usecase_list' %}" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-clipboard-list w-5 h-5 mr-2 text-white"></i>
+                    Use Cases
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-user w-5 h-5 mr-2 text-white"></i>
+                    Profiles
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-folder w-5 h-5 mr-2 text-white"></i>
+                    Files
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-chart-line w-5 h-5 mr-2 text-white"></i>
+                    Project Tracking
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-users w-5 h-5 mr-2 text-white"></i>
+                    Collaborators
+                </a>
+                <a href="#" class="flex items-center py-2 px-4 rounded hover:bg-blue-600">
+                    <i class="fas fa-file-alt w-5 h-5 mr-2 text-white"></i>
+                    Reports
+                </a>
+                <a href="{% url 'login' %}" class="block py-2 px-4 rounded hover:bg-blue-600">Logout</a>
+            </nav>
+            
+            <footer class="p-4 text-center text-sm">
+                <p>&copy; {% now "Y" %} DevFlow. All rights reserved.</p>
+            </footer>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 bg-white">
+            <!-- Header -->
+            <header class="bg-gray-100 p-4 flex items-center justify-between shadow">
+                <h2 class="text-xl font-bold">Welcome, {{ profile.name }} {{ profile.surname }}</h2>
+                <div class="flex items-center space-x-4">
+                    {% load static %}
+
+{% if profile.profile_picture %}
+    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% else %}
+    <img src="{% static 'images/profile_picture_placeholder.jpg' %}" alt="Profile Picture" class="w-10 h-10 rounded-full">
+{% endif %}
+
+                    <div class="text-gray-700">
+                        <p class="font-medium">{{ profile.name }} {{ profile.surname }}</p>
+                        <p class="text-sm">{{ profile.get_role_display }}</p>
+                    </div>
+                </div>
+            </header>
+
+                <!-- Page Loader -->
+    <div id="loader" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="animate-spin border-t-4 border-orange-500 border-solid rounded-full w-16 h-16"></div>
+    </div>
+
+
+            <!-- Main Dashboard Content -->
+<div class="p-6">
+    <h3 class="text-2xl font-bold mb-6">Dashboard Overview</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1: Total Projects -->
+        <div class="bg-blue-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-project-diagram w-6 h-6 text-blue-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-blue-800">Total Projects</h4>
+            </div>
+            <p class="text-4xl font-bold text-blue-600 mt-4">{{ total_projects }}</p>
+        </div>
+
+        <!-- Card 2: Completed Tasks -->
+        <div class="bg-green-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-check-circle w-6 h-6 text-green-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-green-800">Completed Tasks</h4>
+            </div>
+            <p class="text-4xl font-bold text-green-600 mt-4">{{ completed_tasks }}</p>
+        </div>
+
+        <!-- Card 3: Pending Requirements -->
+        <div class="bg-yellow-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-exclamation-circle w-6 h-6 text-yellow-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-yellow-800">Pending Requirements</h4>
+            </div>
+            <p class="text-4xl font-bold text-yellow-600 mt-4">{{ pending_requirements }}</p>
+        </div>
+
+        <!-- Card 4: Use Cases (Draft) -->
+        <div class="bg-teal-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-pencil-alt w-6 h-6 text-teal-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-teal-800">Use Cases (Draft)</h4>
+            </div>
+            <p class="text-4xl font-bold text-teal-600 mt-4">{{ use_cases_draft }}</p>
+        </div>
+
+        <!-- Card 5: Use Cases (Under Review) -->
+        <div class="bg-teal-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-clock w-6 h-6 text-teal-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-teal-800">Use Cases (Under Review)</h4>
+            </div>
+            <p class="text-4xl font-bold text-teal-600 mt-4">{{ use_cases_under_review }}</p>
+        </div>
+
+        <!-- Card 6: Use Cases (Approved) -->
+        <div class="bg-teal-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-thumbs-up w-6 h-6 text-teal-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-teal-800">Use Cases (Approved)</h4>
+            </div>
+            <p class="text-4xl font-bold text-teal-600 mt-4">{{ use_cases_approved }}</p>
+        </div>
+
+        <!-- Card 7: Total Workflows -->
+        <div class="bg-purple-100 p-6 rounded-lg shadow">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-random w-6 h-6 text-purple-600 mr-4"></i>
+                <h4 class="text-lg font-semibold text-purple-800">Total Workflows</h4>
+            </div>
+            <p class="text-4xl font-bold text-purple-600 mt-4">{{ total_workflows }}</p>
+        </div>
+    </div>
+</div>
+
+        </main>
+    </div>
+</body>
+
+</html>
+
+<!-- Page Loader jScript -->
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 500);  // 500 milliseconds = 0.5 seconds
+    };
+</script>

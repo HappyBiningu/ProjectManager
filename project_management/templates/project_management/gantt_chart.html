@@ -1,0 +1,29 @@
+#gantt_chart {
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+}
+
+<!-- project_management/templates/project_management/gantt_chart.html -->
+
+<h1>{{ project.title }} - Gantt Chart</h1>
+<div id="gantt_chart"></div>
+
+
+<!-- In your base HTML template or a dedicated project template -->
+<script src="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.0/dist/frappe-gantt.min.js"></script>
+
+
+<script>
+    const tasks = {{ gantt_data|safe }};
+    
+    const gantt = new Gantt("#gantt_chart", tasks, {
+        header_height: 50,
+        column_width: 30,
+        step: 24,
+        view_modes: ['Day', 'Week', 'Month'],
+        language: 'en',
+    });
+
+    gantt.render();
+</script>
