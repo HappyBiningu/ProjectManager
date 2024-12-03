@@ -4,10 +4,10 @@ from urllib.parse import urlparse
 from .settings import *
 from .settings import BASE_DIR
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
-CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
+ALLOWED_HOSTS = [os.environ.get('WEBSITE_HOSTNAME', 'localhost')]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('WEBSITE_HOSTNAME', 'localhost')]
 DEBUG = True
-SECRET_KEY = os.environ['MY_SECRET_KEY']
+SECRET_KEY = os.environ.get('MY_SECRET_KEY', 'django-insecure-default-key')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
